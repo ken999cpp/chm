@@ -205,7 +205,7 @@ bool selfTest() {
     for (double v : r) {
         ok = ok && fabs(v - sqrt(2.0)) <= EPS;
     }
-    printf("тест %s\n\n", ok ? "ПРОЙДЕН: все 4 метода дали sqrt(2) с точностью 0.001" : "не пройден");
+    printf("тест %s\n\n", ok ? "пройден: все 4 метода дали sqrt(2) с точностью 0.001" : "не пройден");
     return ok;
 }
 
