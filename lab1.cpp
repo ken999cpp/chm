@@ -118,15 +118,18 @@ void check(const Eq &e, double x) {
 
 double iteration(const Eq &e, Seg s) {
     s = narrow(e, s);
-    double m1, M1; bounds1(e, s, m1, M1);
-    double K = (e.df(s.a) > 0 ? 1 : -1) * M1, q = 1 - m1 / M1;
+    double m1, M1; 
+    bounds1(e, s, m1, M1);
+    double K = (e.df(s.a) > 0 ? 1 : -1) * M1;
+    double q = 1 - m1 / M1; // коэф. сжатия, q > 0 && q < 1 для сходимости метода итерации
     printf("  Метод итерации на [%.5f; %.5f]: phi(x) = x - f(x)/(%.5f), q = max|phi'| = %.5f < 1\n", s.a, s.b, K, q);
-    double x = s.a, stop = q > 0 ? TOL * (1 - q) / q : INFINITY;
+    double x = s.a;
+    double stop = q > 0 ? TOL * (1 - q) / q : INFINITY;
     printf("    n  x_n          f(x_n)\n    0  %.6f  %+.6f\n", x, e.f(x));
     for (int n = 1; n <= MAX_IT; n++) {
         double nx = x - e.f(x) / K;
         printf("  %3d  %.6f  %+.6f\n", n, nx, e.f(nx));
-        bool done = fabs(nx - x) <= stop;
+        bool done = fabs(nx - x) <= stop; // разность между приближенными значениями меньше порога остановки (TOL*(1-q)/q)
         x = nx;
         if (done) {
             break;
