@@ -113,7 +113,7 @@ double r3(double x) { return round(x * 1000) / 1000 + 0.0; }
 void check(const Eq &e, double x) {
     double l = e.f(x - EPS), r = e.f(x + EPS);
     printf("  Проверка: f(%.6f) = %+.2e;  f(x-eps) = %+.2e, f(x+eps) = %+.2e  => %s\n",
-           x, e.f(x), l, r, l * r <= 0 ? "корень на отрезке [x-eps; x+eps], верно" : "ОШИБКА");
+           x, e.f(x), l, r, l * r <= 0 ? "корень на отрезке [x-eps; x+eps], верно" : "ошибка");
 }
 
 double iteration(const Eq &e, Seg s) {
@@ -144,7 +144,7 @@ double chord(const Eq &e, Seg s) {
     printf("  Метод хорд на [%.5f; %.5f]: неподвижный конец c = %.5f, m1 = %.5f\n", s.a, s.b, c, m1);
     printf("    n  x_n          f(x_n)      |f|/m1\n    0  %.6f  %+.6f  %.2e\n", x, e.f(x), fabs(e.f(x)) / m1);
     for (int n = 1; n <= MAX_IT && fabs(e.f(x)) / m1 > TOL; n++) {
-        x = x - e.f(x) * (c - x) / (e.f(c) - e.f(x));
+        x = x - (e.f(x) * (c - x) / (e.f(c) - e.f(x))); // xn+1 = xn - (f(xn) * (c - xn) / (f(c) - f(xn)))
         printf("  %3d  %.6f  %+.6f  %.2e\n", n, x, e.f(x), fabs(e.f(x)) / m1);
     }
     printf("  Корень: x = %.6f ~ %.3f\n", x, r3(x));
@@ -159,7 +159,7 @@ double newton(const Eq &e, Seg s) {
     printf("  Метод касательных на [%.5f; %.5f]: x0 = %.5f (f*f'' > 0), m1 = %.5f\n", s.a, s.b, x, m1);
     printf("    n  x_n          f(x_n)      |f|/m1\n    0  %.6f  %+.6f  %.2e\n", x, e.f(x), fabs(e.f(x)) / m1);
     for (int n = 1; n <= MAX_IT && fabs(e.f(x)) / m1 > TOL; n++) {
-        x = x - e.f(x) / e.df(x);
+        x = x - e.f(x) / e.df(x); // xn+1 = x_n - f(x_n)/f'(x_n)
         printf("  %3d  %.6f  %+.6f  %.2e\n", n, x, e.f(x), fabs(e.f(x)) / m1);
     }
     printf("  Корень: x = %.6f ~ %.3f\n", x, r3(x));
